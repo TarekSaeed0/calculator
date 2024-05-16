@@ -9,7 +9,7 @@
 				<property name="column-spacing">5</property>
 				<property name="column-homogeneous">true</property>
 				<property name="margin-top">20</property>
-				<property name="margin-bottom">20</property>
+				<property name="margin-bottom">10</property>
 				<property name="margin-start">10</property>
 				<property name="margin-end">10</property>
 				<child>
@@ -17,7 +17,8 @@
 						<property name="halign">fill</property>
 						<child>
 							<object class="GtkLabel">
-								<property name="label"></property>
+								<property name="label">12+3/5</property>
+								<property name="halign">start</property>
 								<layout>
 									<property name="column">0</property>
 									<property name="row">1</property>
@@ -27,13 +28,14 @@
 						<layout>
 							<property name="column">0</property>
 							<property name="row">0</property>
-							<property name="column-span">3</property>
+							<property name="column-span">4</property>
 						</layout>
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-7">
+					<object class="GtkButton" id="button_7">
 						<property name="label">7</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">0</property>
 							<property name="row">1</property>
@@ -41,8 +43,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-8">
+					<object class="GtkButton" id="button_8">
 						<property name="label">8</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">1</property>
 							<property name="row">1</property>
@@ -50,8 +53,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-9">
+					<object class="GtkButton" id="button_9">
 						<property name="label">9</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">2</property>
 							<property name="row">1</property>
@@ -59,8 +63,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-÷">
+					<object class="GtkButton" id="button_divide">
 						<property name="label">÷</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">3</property>
 							<property name="row">1</property>
@@ -68,8 +73,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-4">
+					<object class="GtkButton" id="button_4">
 						<property name="label">4</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">0</property>
 							<property name="row">2</property>
@@ -77,8 +83,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-5">
+					<object class="GtkButton" id="button_5">
 						<property name="label">5</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">1</property>
 							<property name="row">2</property>
@@ -86,8 +93,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-6">
+					<object class="GtkButton" id="button_6">
 						<property name="label">6</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">2</property>
 							<property name="row">2</property>
@@ -95,8 +103,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-×">
+					<object class="GtkButton" id="button_multiply">
 						<property name="label">×</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">3</property>
 							<property name="row">2</property>
@@ -104,8 +113,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-1">
+					<object class="GtkButton" id="button_1">
 						<property name="label">1</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">0</property>
 							<property name="row">3</property>
@@ -113,8 +123,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-2">
+					<object class="GtkButton" id="button_2">
 						<property name="label">2</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">1</property>
 							<property name="row">3</property>
@@ -122,8 +133,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-3">
+					<object class="GtkButton" id="button_3">
 						<property name="label">3</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">2</property>
 							<property name="row">3</property>
@@ -131,8 +143,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button--">
+					<object class="GtkButton" id="button_minus">
 						<property name="label">-</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">3</property>
 							<property name="row">3</property>
@@ -140,8 +153,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-0">
+					<object class="GtkButton" id="button_0">
 						<property name="label">0</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">0</property>
 							<property name="row">4</property>
@@ -149,8 +163,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-.">
+					<object class="GtkButton" id="button_dot">
 						<property name="label">.</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">1</property>
 							<property name="row">4</property>
@@ -158,8 +173,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-=">
+					<object class="GtkButton" id="button_equal">
 						<property name="label">=</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">2</property>
 							<property name="row">4</property>
@@ -167,8 +183,9 @@
 					</object>
 				</child>
 				<child>
-					<object class="GtkButton" id="button-+">
+					<object class="GtkButton" id="button_plus">
 						<property name="label">+</property>
+						<property name="can-focus">false</property>
 						<layout>
 							<property name="column">3</property>
 							<property name="row">4</property>

@@ -1,0 +1,9 @@
+frame {
+  color: @theme_bg_color;
+  background-color: @theme_fg_color;
+  min-height: 40px;
+}
+
+grid button {
+  min-width: 0;
+}

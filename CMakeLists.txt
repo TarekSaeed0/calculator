@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29.2)
+cmake_minimum_required(VERSION 3.29.1)
 project(calculator)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -15,10 +15,10 @@ add_custom_command(
 	COMMAND
 		${GLIB_COMPILE_RESOURCES} ARGS resource/calculator.gresource.xml
 		--target=${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
-		--sourcedir=resource --generate-source
+		--sourcedir=resource/calculator --generate-source
 	VERBATIM
 	MAIN_DEPENDENCY resource/calculator.gresource.xml
-	DEPENDS resource/calculator.ui
+	DEPENDS resource/calculator/window.ui resource/calculator/window.css
 )
 
 add_custom_target(
@@ -28,7 +28,7 @@ add_custom_target(
 
 add_executable(
 	${PROJECT_NAME} ${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
-					source/calculator/app.c source/main.c
+					source/calculator/application.c source/main.c
 )
 target_include_directories(${PROJECT_NAME} PRIVATE header)
 target_link_directories(${PROJECT_NAME} PRIVATE library)
