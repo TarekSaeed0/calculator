@@ -24,7 +24,7 @@ static void remove_provider(gpointer data) {
 }
 
 static GtkLabel *label_expression;
-static GtkLabel *label_evaluation;
+static GtkLabel *label_value;
 
 static void append_to_expression(GtkWidget *widget, gpointer data) {
 	(void)widget;
@@ -35,6 +35,21 @@ static void append_to_expression(GtkWidget *widget, gpointer data) {
 	g_string_append_c(text, character);
 
 	gtk_label_set_text(label_expression, text->str);
+}
+
+static void evaluate_expression(GtkWidget *widget, gpointer data) {
+	(void)widget, (void)data;
+
+	const gchar *expression = gtk_label_get_text(label_expression);
+
+	gchar *end;
+	gdouble value = g_strtod(expression, &end);
+	expression = end;
+
+	GString *text = g_string_new(NULL);
+	g_string_printf(text, "%lg", value);
+
+	gtk_label_set_text(label_value, text->str);
 }
 
 static void calculator_application_activate(GApplication *application) {
@@ -50,8 +65,7 @@ static void calculator_application_activate(GApplication *application) {
 
 	label_expression =
 		GTK_LABEL(gtk_builder_get_object(builder, "label-expression"));
-	label_evaluation =
-		GTK_LABEL(gtk_builder_get_object(builder, "label-evaluation"));
+	label_value = GTK_LABEL(gtk_builder_get_object(builder, "label-value"));
 
 	GString *name = g_string_new(NULL);
 	for (gint digit = 0; digit <= 9; digit++) {
@@ -65,6 +79,14 @@ static void calculator_application_activate(GApplication *application) {
 			GINT_TO_POINTER('0' + digit)
 		);
 	}
+
+	GObject *button_dot = gtk_builder_get_object(builder, "button-dot");
+	g_signal_connect(
+		GTK_BUTTON(button_dot),
+		"clicked",
+		G_CALLBACK(append_to_expression),
+		GINT_TO_POINTER('.')
+	);
 
 	GObject *button_add = gtk_builder_get_object(builder, "button-add");
 	g_signal_connect(
@@ -98,6 +120,14 @@ static void calculator_application_activate(GApplication *application) {
 		"clicked",
 		G_CALLBACK(append_to_expression),
 		GINT_TO_POINTER('/')
+	);
+
+	GObject *button_equal = gtk_builder_get_object(builder, "button-equal");
+	g_signal_connect(
+		GTK_BUTTON(button_equal),
+		"clicked",
+		G_CALLBACK(evaluate_expression),
+		NULL
 	);
 
 	GtkCssProvider *provider = gtk_css_provider_new();

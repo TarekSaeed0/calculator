@@ -30,7 +30,7 @@
 									</object>
 								</child>
 								<child>
-									<object class="GtkLabel" id="label-evaluation">
+									<object class="GtkLabel" id="label-value">
 										<property name="label"></property>
 										<property name="halign">end</property>
 									</object>
