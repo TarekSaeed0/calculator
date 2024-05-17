@@ -5,16 +5,18 @@
 		<property name="resizable">false</property>
 		<child>
 			<object class="GtkGrid" id="grid">
-				<property name="row-spacing">5</property>
-				<property name="column-spacing">5</property>
+				<property name="row-spacing">3</property>
+				<property name="column-spacing">3</property>
 				<property name="column-homogeneous">true</property>
-				<property name="margin-top">20</property>
+				<property name="margin-top">10</property>
 				<property name="margin-bottom">10</property>
 				<property name="margin-start">10</property>
 				<property name="margin-end">10</property>
 				<child>
 					<object class="GtkFrame">
 						<property name="halign">fill</property>
+						<property name="margin-top">10</property>
+						<property name="margin-bottom">5</property>
 						<child>
 							<object class="GtkBox">
 								<property name="orientation">vertical</property>
@@ -23,14 +25,13 @@
 								<property name="margin-start">5</property>
 								<property name="margin-end">5</property>
 								<child>
-									<object class="GtkLabel" id="label-expression">
+									<object class="GtkLabel" id="expression-label">
 										<property name="label"></property>
 										<property name="halign">start</property>
-										<property name="name">label-expression</property>
 									</object>
 								</child>
 								<child>
-									<object class="GtkLabel" id="label-value">
+									<object class="GtkLabel" id="value-label">
 										<property name="label"></property>
 										<property name="halign">end</property>
 									</object>

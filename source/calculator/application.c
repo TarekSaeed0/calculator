@@ -1,5 +1,5 @@
 #include <calculator/application.h>
-#include <gtk/gtkcssprovider.h>
+#include <math.h>
 
 struct _CalculatorApplication {
 	GtkApplication parent;
@@ -23,33 +23,117 @@ static void remove_provider(gpointer data) {
 	);
 }
 
-static GtkLabel *label_expression;
-static GtkLabel *label_value;
+gboolean should_clear = FALSE;
+static GtkLabel *expression_label;
+static GtkLabel *value_label;
 
 static void append_to_expression(GtkWidget *widget, gpointer data) {
 	(void)widget;
 
+	if (should_clear) {
+		gtk_label_set_text(expression_label, "");
+		gtk_label_set_text(value_label, "");
+		should_clear = FALSE;
+	}
+
 	gchar character = (gchar)GPOINTER_TO_INT(data);
 
-	GString *text = g_string_new(gtk_label_get_text(label_expression));
+	GString *text = g_string_new(gtk_label_get_text(expression_label));
 	g_string_append_c(text, character);
 
-	gtk_label_set_text(label_expression, text->str);
+	gtk_label_set_text(expression_label, text->str);
+}
+
+static gdouble evaluate_expression_atom(const gchar **expression) {
+	gchar *end;
+	gdouble value = g_strtod(*expression, &end);
+	if (end == *expression) {
+		return NAN;
+	}
+	*expression = end;
+
+	return value;
+}
+
+static gdouble evaluate_expression_primary(const gchar **expression) {
+	while (g_ascii_isspace(**expression)) {
+		++*expression;
+	}
+	switch (**expression) {
+		case '+': {
+			++*expression;
+			return evaluate_expression_atom(expression);
+		} break;
+		case '-': {
+			++*expression;
+			return -evaluate_expression_atom(expression);
+		} break;
+		default: return evaluate_expression_atom(expression);
+	}
+}
+
+static gdouble evaluate_expression_factor(const gchar **expression) {
+	gdouble value = evaluate_expression_primary(expression);
+
+	while (1) {
+		while (g_ascii_isspace(**expression)) {
+			++*expression;
+		}
+		switch (**expression) {
+			case '*': {
+				++*expression;
+				value *= evaluate_expression_primary(expression);
+			} break;
+			case '/': {
+				++*expression;
+				value /= evaluate_expression_primary(expression);
+			} break;
+			default: return value;
+		}
+	}
+}
+
+static gdouble evaluate_expression_term(const gchar **expression) {
+	gdouble value = evaluate_expression_factor(expression);
+
+	while (1) {
+		while (g_ascii_isspace(**expression)) {
+			++*expression;
+		}
+		switch (**expression) {
+			case '+': {
+				++*expression;
+				value += evaluate_expression_factor(expression);
+			} break;
+			case '-': {
+				++*expression;
+				value -= evaluate_expression_factor(expression);
+			} break;
+			default: return value;
+		}
+	}
 }
 
 static void evaluate_expression(GtkWidget *widget, gpointer data) {
 	(void)widget, (void)data;
 
-	const gchar *expression = gtk_label_get_text(label_expression);
+	const gchar *expression = gtk_label_get_text(expression_label);
 
-	gchar *end;
-	gdouble value = g_strtod(expression, &end);
-	expression = end;
+	gdouble value = evaluate_expression_term(&expression);
 
-	GString *text = g_string_new(NULL);
-	g_string_printf(text, "%lg", value);
+	while (g_ascii_isspace(*expression)) {
+		++expression;
+	}
+	if (!isfinite(value) || *expression != '\0') {
+		gtk_label_set_text(value_label, "Math Error");
+	} else {
+		GString *text = g_string_new(NULL);
+		g_string_printf(text, "%lg", value);
 
-	gtk_label_set_text(label_value, text->str);
+		gtk_label_set_text(value_label, text->str);
+	}
+
+	should_clear = TRUE;
 }
 
 static void calculator_application_activate(GApplication *application) {
@@ -63,9 +147,9 @@ static void calculator_application_activate(GApplication *application) {
 		GTK_APPLICATION(application)
 	);
 
-	label_expression =
-		GTK_LABEL(gtk_builder_get_object(builder, "label-expression"));
-	label_value = GTK_LABEL(gtk_builder_get_object(builder, "label-value"));
+	expression_label =
+		GTK_LABEL(gtk_builder_get_object(builder, "expression-label"));
+	value_label = GTK_LABEL(gtk_builder_get_object(builder, "value-label"));
 
 	GString *name = g_string_new(NULL);
 	for (gint digit = 0; digit <= 9; digit++) {
