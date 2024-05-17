@@ -1,22 +1,40 @@
 #include <calculator/application.h>
 #include <gtk/gtkcssprovider.h>
 
-struct _CalculatorApp {
+struct _CalculatorApplication {
 	GtkApplication parent;
 };
 
-G_DEFINE_TYPE(CalculatorApp, calculator_application, GTK_TYPE_APPLICATION)
+G_DEFINE_TYPE(
+	CalculatorApplication,
+	calculator_application,
+	GTK_TYPE_APPLICATION
+)
 
-static void calculator_application_init(CalculatorApp *application) {
+static void calculator_application_init(CalculatorApplication *application) {
 	(void)application;
 }
 
 static void remove_provider(gpointer data) {
-	GtkStyleProvider *provider = data;
+	GtkStyleProvider *provider = GTK_STYLE_PROVIDER(data);
 	gtk_style_context_remove_provider_for_display(
 		gdk_display_get_default(),
 		provider
 	);
+}
+
+static GtkLabel *label_expression;
+static GtkLabel *label_evaluation;
+
+static void append_to_expression(GtkWidget *widget, gpointer data) {
+	(void)widget;
+
+	gchar character = (gchar)GPOINTER_TO_INT(data);
+
+	GString *text = g_string_new(gtk_label_get_text(label_expression));
+	g_string_append_c(text, character);
+
+	gtk_label_set_text(label_expression, text->str);
 }
 
 static void calculator_application_activate(GApplication *application) {
@@ -30,20 +48,72 @@ static void calculator_application_activate(GApplication *application) {
 		GTK_APPLICATION(application)
 	);
 
-	GtkCssProvider *css_provider = gtk_css_provider_new();
+	label_expression =
+		GTK_LABEL(gtk_builder_get_object(builder, "label-expression"));
+	label_evaluation =
+		GTK_LABEL(gtk_builder_get_object(builder, "label-evaluation"));
+
+	GString *name = g_string_new(NULL);
+	for (gint digit = 0; digit <= 9; digit++) {
+		g_string_printf(name, "button-%d", digit);
+
+		GObject *button_digit = gtk_builder_get_object(builder, name->str);
+		g_signal_connect(
+			GTK_BUTTON(button_digit),
+			"clicked",
+			G_CALLBACK(append_to_expression),
+			GINT_TO_POINTER('0' + digit)
+		);
+	}
+
+	GObject *button_add = gtk_builder_get_object(builder, "button-add");
+	g_signal_connect(
+		GTK_BUTTON(button_add),
+		"clicked",
+		G_CALLBACK(append_to_expression),
+		GINT_TO_POINTER('+')
+	);
+
+	GObject *button_subtract =
+		gtk_builder_get_object(builder, "button-subtract");
+	g_signal_connect(
+		GTK_BUTTON(button_subtract),
+		"clicked",
+		G_CALLBACK(append_to_expression),
+		GINT_TO_POINTER('-')
+	);
+
+	GObject *button_multiply =
+		gtk_builder_get_object(builder, "button-multiply");
+	g_signal_connect(
+		GTK_BUTTON(button_multiply),
+		"clicked",
+		G_CALLBACK(append_to_expression),
+		GINT_TO_POINTER('*')
+	);
+
+	GObject *button_divide = gtk_builder_get_object(builder, "button-divide");
+	g_signal_connect(
+		GTK_BUTTON(button_divide),
+		"clicked",
+		G_CALLBACK(append_to_expression),
+		GINT_TO_POINTER('/')
+	);
+
+	GtkCssProvider *provider = gtk_css_provider_new();
 	gtk_css_provider_load_from_resource(
-		css_provider,
+		provider,
 		"/com/github/TarekSaeed0/Calculator/window.css"
 	);
 	gtk_style_context_add_provider_for_display(
 		gdk_display_get_default(),
-		GTK_STYLE_PROVIDER(css_provider),
+		GTK_STYLE_PROVIDER(provider),
 		G_MAXUINT
 	);
 	g_object_set_data_full(
 		window,
 		"provider",
-		GTK_STYLE_PROVIDER(css_provider),
+		GTK_STYLE_PROVIDER(provider),
 		remove_provider
 	);
 
@@ -52,11 +122,12 @@ static void calculator_application_activate(GApplication *application) {
 	g_object_unref(builder);
 }
 
-static void calculator_application_class_init(CalculatorAppClass *class) {
+static void calculator_application_class_init(CalculatorApplicationClass
+												  *class) {
 	G_APPLICATION_CLASS(class)->activate = calculator_application_activate;
 }
 
-CalculatorApp *calculator_application_new(void) {
+CalculatorApplication *calculator_application_new(void) {
 	return g_object_new(
 		CALCULATOR_APPLICATION_TYPE,
 		"application-id",

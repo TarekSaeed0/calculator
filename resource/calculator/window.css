@@ -1,7 +1,10 @@
 frame {
   color: @theme_bg_color;
   background-color: @theme_fg_color;
-  min-height: 40px;
+}
+
+#label-expression {
+  font-size: 16px;
 }
 
 grid button {
