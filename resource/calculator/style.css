@@ -10,3 +10,7 @@ label {
 grid button {
   min-width: 0;
 }
+
+#button-add {
+  background-color: @accent_color;
+}

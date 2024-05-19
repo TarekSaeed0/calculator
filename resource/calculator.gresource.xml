@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-	<gresource prefix="/com/github/TarekSaeed0/Calculator">
+	<gresource prefix="/com/github/TarekSaeed0/calculator">
 		<file preprocess="xml-stripblanks">window.ui</file>
-		<file>window.css</file>
+		<file>style.css</file>
+		<file>icons/scalable/apps/calculator.svg</file>
 	</gresource>
 </gresources>

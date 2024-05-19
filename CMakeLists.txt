@@ -18,7 +18,7 @@ add_custom_command(
 		--sourcedir=resource/calculator --generate-source
 	VERBATIM
 	MAIN_DEPENDENCY resource/calculator.gresource.xml
-	DEPENDS resource/calculator/window.ui resource/calculator/window.css
+	DEPENDS resource/calculator/window.ui resource/calculator/style.css resource/calculator/icons/scalable/apps/calculator.svg
 )
 
 add_custom_target(
@@ -27,8 +27,9 @@ add_custom_target(
 )
 
 add_executable(
-	${PROJECT_NAME} ${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
-					source/calculator/application.c source/main.c
+	${PROJECT_NAME}
+	${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
+	source/calculator/evaluate.c source/calculator/application.c source/main.c
 )
 target_include_directories(${PROJECT_NAME} PRIVATE header)
 target_link_directories(${PROJECT_NAME} PRIVATE library)
