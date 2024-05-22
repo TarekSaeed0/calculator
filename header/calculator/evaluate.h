@@ -3,9 +3,6 @@
 
 #include <glib.h>
 
-gdouble calculator_evaluate(
-	const gchar *expression,
-	const gchar **expression_end
-);
+gdouble calculator_evaluate(const gchar *string);
 
 #endif

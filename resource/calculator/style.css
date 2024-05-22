@@ -1,14 +1,22 @@
 frame {
-  color: @theme_bg_color;
   background-color: @theme_fg_color;
 }
-
-label {
+frame textview {
+  color: @theme_bg_color;
+  caret-color: @theme_bg_color;
+  background-color: transparent;
   font-size: 16px;
+}
+frame textview text {
+  background-color: transparent;
 }
 
 grid button {
   min-width: 0;
+}
+grid button:hover {
+  outline: 2px solid alpha(@accent_color, 0.35);
+  outline-offset: 0;
 }
 
 #button-add {

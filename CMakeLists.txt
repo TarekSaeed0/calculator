@@ -6,6 +6,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK4 REQUIRED IMPORTED_TARGET gtk4)
+pkg_check_modules(GMODULE_EXPORT REQUIRED IMPORTED_TARGET gmodule-export-2.0)
 
 find_program(GLIB_COMPILE_RESOURCES NAMES glib-compile-resources REQUIRED)
 
@@ -18,7 +19,8 @@ add_custom_command(
 		--sourcedir=resource/calculator --generate-source
 	VERBATIM
 	MAIN_DEPENDENCY resource/calculator.gresource.xml
-	DEPENDS resource/calculator/window.ui resource/calculator/style.css resource/calculator/icons/scalable/apps/calculator.svg
+	DEPENDS resource/calculator/window.ui resource/calculator/style.css
+			resource/calculator/icons/scalable/apps/calculator.svg
 )
 
 add_custom_target(
@@ -33,7 +35,9 @@ add_executable(
 )
 target_include_directories(${PROJECT_NAME} PRIVATE header)
 target_link_directories(${PROJECT_NAME} PRIVATE library)
-target_link_libraries(${PROJECT_NAME} PRIVATE PkgConfig::GTK4)
+target_link_libraries(
+	${PROJECT_NAME} PRIVATE PkgConfig::GTK4 PkgConfig::GMODULE_EXPORT
+)
 target_compile_options(
 	${PROJECT_NAME}
 	PRIVATE -O2
