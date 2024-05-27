@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Calculator
+Icon=calculator
+StartupNotify=true
+Exec=calculator
+
