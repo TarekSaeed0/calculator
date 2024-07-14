@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.29.1)
 project(
 	calculator
 	VERSION 1.0
-	DESCRIPTION "Simple calculator"
+	DESCRIPTION "Simple calculator built in c"
 	LANGUAGES C
 )
 
@@ -19,13 +19,15 @@ add_custom_command(
 	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND
-		${GLIB_COMPILE_RESOURCES} resource/calculator.gresource.xml
+		${GLIB_COMPILE_RESOURCES} data/calculator.gresource.xml
 		--target=${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
-		--sourcedir=resource/calculator --generate-source
+		--sourcedir=data/calculator --generate-source
 	VERBATIM
-	MAIN_DEPENDENCY resource/calculator.gresource.xml
-	DEPENDS resource/calculator/window.ui resource/calculator/style.css
-			resource/calculator/icons/hicolor/scalable/apps/calculator.svg
+	MAIN_DEPENDENCY data/calculator.gresource.xml
+	DEPENDS
+		data/calculator/window.ui
+		data/calculator/style.css
+		data/calculator/icons/hicolor/scalable/apps/com.github.TarekSaeed0.calculator.svg
 )
 
 add_custom_target(
@@ -37,29 +39,34 @@ find_program(DESKTOP_FILE_VALIDATE NAMES desktop-file-validate)
 
 if(DESKTOP_FILE_VALIDATE)
 	add_custom_command(
-		OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/calculator.desktop.validated
+		OUTPUT
+			${CMAKE_CURRENT_BINARY_DIR}/com.github.TarekSaeed0.calculator.desktop.validated
 		WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-		COMMAND ${DESKTOP_FILE_VALIDATE}
-				resource/calculator/applications/calculator.desktop
-		COMMAND ${CMAKE_COMMAND} -E touch
-				${CMAKE_CURRENT_BINARY_DIR}/calculator.desktop.validated
+		COMMAND
+			${DESKTOP_FILE_VALIDATE}
+			data/calculator/applications/com.github.TarekSaeed0.calculator.desktop
+		COMMAND
+			${CMAKE_COMMAND} -E touch
+			${CMAKE_CURRENT_BINARY_DIR}/com.github.TarekSaeed0.calculator.desktop.validated
 		VERBATIM
-		MAIN_DEPENDENCY resource/calculator/applications/calculator.desktop
+		MAIN_DEPENDENCY
+			data/calculator/applications/com.github.TarekSaeed0.calculator.desktop
 	)
 
 	add_custom_target(
 		calculator_validate_desktop_file ALL
-		DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/calculator.desktop.validated
+		DEPENDS
+			${CMAKE_CURRENT_BINARY_DIR}/com.github.TarekSaeed0.calculator.desktop.validated
 	)
 endif()
 
 add_executable(
 	${PROJECT_NAME}
 	${CMAKE_CURRENT_BINARY_DIR}/calculator.gresource.c
-	source/calculator/evaluate.c source/calculator/application.c source/main.c
+	src/calculator/evaluate.c src/calculator/ratio.c
+	src/calculator/application.c src/main.c
 )
-target_include_directories(${PROJECT_NAME} PRIVATE header)
-target_link_directories(${PROJECT_NAME} PRIVATE library)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_link_libraries(
 	${PROJECT_NAME} PRIVATE PkgConfig::GTK4 PkgConfig::GMODULE_EXPORT
 )
@@ -78,9 +85,7 @@ target_compile_options(
 			-Wstrict-prototypes
 			-Wstrict-overflow=5
 			-Wwrite-strings
-			-Waggregate-return
 			-Wcast-qual
-			-Wswitch-default
 			-Wswitch-enum
 			-Wconversion
 			-Wunreachable-code
@@ -88,6 +93,4 @@ target_compile_options(
 )
 
 install(TARGETS calculator)
-install(DIRECTORY resource/calculator/icons resource/calculator/applications
-		TYPE DATA
-)
+install(DIRECTORY data/calculator/icons data/calculator/applications TYPE DATA)

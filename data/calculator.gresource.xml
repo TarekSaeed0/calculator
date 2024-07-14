@@ -3,6 +3,6 @@
 	<gresource prefix="/com/github/TarekSaeed0/calculator">
 		<file preprocess="xml-stripblanks">window.ui</file>
 		<file>style.css</file>
-		<file>icons/hicolor/scalable/apps/calculator.svg</file>
+		<file>icons/hicolor/scalable/apps/com.github.TarekSaeed0.calculator.svg</file>
 	</gresource>
 </gresources>

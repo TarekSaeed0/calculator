@@ -1,6 +1,10 @@
 frame {
   background-color: @theme_fg_color;
 }
+frame button {
+  background-color: @theme_bg_color;
+  min-height: 0;
+}
 frame textview {
   color: @theme_bg_color;
   caret-color: @theme_bg_color;
@@ -9,6 +13,7 @@ frame textview {
 }
 frame textview text {
   background-color: transparent;
+  min-width: 0;
 }
 
 grid button {
@@ -19,6 +24,6 @@ grid button:hover {
   outline-offset: 0;
 }
 
-#button-add {
+#button-insert-plus-sign {
   background-color: @accent_color;
 }
